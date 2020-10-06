@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- displays site properly based on user's device -->
+
+    <link rel="icon" type="image/png" sizes="32x32" href=".">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+
+    <title>Countries</title>
+
+    <style>
+        .dropbtn {
+            background-color: #fafafa;
+            padding: 16px;
+            font-size: 16px;
+            cursor: pointer;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+
+        .dark {
+            background-color: hsl(207, 26%, 17%);
+            color: #fafafa;
+        }
+
+        .light {
+            background-color: #fafafa;
+            color: hsl(207, 26%, 17%);
+        }
+
+        body {
+            background-color: #fafafa;
+            margin: 0;
+        }
+
+
+        #lua {
+            width: 16px;
+        }
+
+        #input {
+            width: 30%;
+        }
+
+        #titulo {
+            font-size: 1.7emrem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div id="header" class="d-flex p-4 justify-content-between">
+            <h2 id="" titulo>Where in the word ?</h2>
+            <button id="botao" type="button" class="btn btn-light" onclick="darkMode()"> <img src="./images/moon.png"
+                    id="lua">
+                <span id="mode">Dark Mode</span></button>
+
+        </div>
+        <div class="dropdown-divider"></div>
+
+        <div class="d-flex p-4 justify-content-between">
+
+            <input type="text" class="form-control" id="input" placeholder="Search for a country">
+
+
+
+            <div class="dropdown">
+                <button class="dropbtn">Filter by Region</button>
+                <div class="dropdown-content">
+                    <a href="#">Africa</a>
+                    <a href="#">America</a>
+                    <a href="#">Asia</a>
+                    <a href="#">Europe</a>
+                    <a href="#">Oceana</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <div class="row row-cols-1 row-cols-md-4 ml-3 mr-3" id="card">
+
+
+            </div>
+        </div>
+</body>
+<script>
+
+
+    function myMap() {
+
+        let url = "https://restcountries.eu/rest/v2/all";
+
+        var container = document.getElementById("card");
+
+        fetch(url)
+            .then(res => res.json())
+            .then((out) => {
+                console.log('Output: ', out);
+                for (i = 0; i < out.length; i++) {
+
+                    var div1 = document.createElement("div");
+                    var div2 = document.createElement("div");
+                    var div3 = document.createElement("div");
+                    var img = document.createElement("img");
+                    var h5 = document.createElement("h5");
+                    var p1 = document.createElement("p");
+                    var p2 = document.createElement("p");
+                    var p3 = document.createElement("p");
+                    div1.className = "col mb-4";
+                    div2.className = "card h-100";
+                    div3.className = "card-body";
+                    img.className = "card-img-top"
+                    img.src = out[i].flag
+                    h5.className = "card-title"
+                    h5.innerText = out[i].name
+                    p1.innerHTML = "Population: <strong>" + out[i].population + "</strong>"
+                    p2.innerHTML = "Region: <strong>" + out[i].region + "</strong>"
+                    p3.innerHTML = "Capital: <strong>" + out[i].capital + "</strong>"
+                    container.appendChild(div1);
+                    div1.appendChild(div2);
+                    div2.appendChild(img);
+                    div2.appendChild(div3);
+                    div3.appendChild(h5);
+                    div3.appendChild(p1);
+                    div3.appendChild(p2);
+                    div3.appendChild(p3);
+                }
+
+
+                // document.getElementById("ip").innerHTML = out.query;
+
+
+            }).catch(err => console.error(err));
+    }
+
+    myMap()
+
+
+    function darkMode() {
+        var body = document.body;
+        var cards = document.getElementsByClassName("card")
+        var botao = document.getElementById("botao")
+
+        console.log(body.className)
+        if (body.className === "dark") {
+
+            body.className = "light"
+
+            for (i = 0; i < cards.length; i++) {
+                cards[i].className = "card h-100 light";
+            }
+
+
+            botao.className = "btn  light"
+            document.getElementById("mode").innerHTML = "Dark Mode";
+            return
+
+        }
+
+
+        for (i = 0; i < cards.length; i++) {
+            cards[i].className = "card h-100 dark";
+        }
+        body.className = "dark"
+        botao.className = "btn  dark"
+
+        document.getElementById("mode").innerHTML = "Light Mode";
+
+    }
+</script>
+
+
+</html>
