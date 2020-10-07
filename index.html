@@ -119,7 +119,7 @@
 
 
             <div class="dropdown">
-                <button class="dropbtn">Filter by Region</button>
+                <button class="dropbtn" id="filter">Filter by Region</button>
                 <div class="dropdown-content">
                     <a href="#" onclick="getRegion('Africa')">Africa</a>
                     <a href="#" onclick="getRegion('Americas')">America</a>
@@ -302,6 +302,8 @@
         var cards = document.getElementsByClassName("card")
         var botao = document.getElementById("botao")
         var header = document.getElementById("header")
+        var input = document.getElementById("input")
+        var filter = document.getElementById("filter")
 
         console.log(body.className)
         if (body.className === "dark") {
@@ -314,6 +316,8 @@
 
 
             botao.className = "btn  lightCard"
+            input.className = "form-control  lightCard"
+            filter.className = "dropbtn  lightCard"
             document.getElementById("mode").innerHTML = "Dark Mode";
             header.style.backgroundColor = "hsl(0, 0%, 98%)";
             return
@@ -326,6 +330,8 @@
         }
         body.className = "dark"
         botao.className = "btn  darkCard"
+        input.className = "form-control  darkCard"
+        filter.className = "dropbtn  darkCard"
 
         document.getElementById("mode").innerHTML = "Light Mode";
         header.style.backgroundColor = "hsl(209, 23%, 22%)";
