@@ -62,12 +62,22 @@
 
         .dark {
             background-color: hsl(207, 26%, 17%);
-            color: #fafafa;
+            color: hsl(0, 0%, 100%);
         }
 
         .light {
-            background-color: #fafafa;
-            color: hsl(207, 26%, 17%);
+            background-color: hsl(0, 0%, 93%, 1);
+            color: hsl(200, 15%, 8%);
+        }
+
+        .lightCard {
+            background-color: hsl(0, 0%, 98%);
+            color: hsl(200, 15%, 8%);
+        }
+
+        .darkCard {
+            background-color: hsl(209, 23%, 22%);
+            color: hsl(0, 0%, 100%);
         }
 
         body {
@@ -101,7 +111,6 @@
                 <span id="mode">Dark Mode</span></button>
 
         </div>
-        <div class="dropdown-divider"></div>
 
         <div class="d-flex p-4 justify-content-between">
 
@@ -112,11 +121,11 @@
             <div class="dropdown">
                 <button class="dropbtn">Filter by Region</button>
                 <div class="dropdown-content">
-                    <a href="#">Africa</a>
-                    <a href="#">America</a>
-                    <a href="#">Asia</a>
-                    <a href="#">Europe</a>
-                    <a href="#">Oceana</a>
+                    <a href="#" onclick="getRegion('Africa')">Africa</a>
+                    <a href="#" onclick="getRegion('Americas')">America</a>
+                    <a href="#" onclick="getRegion('Asia')">Asia</a>
+                    <a href="#" onclick="getRegion('Europe')">Europe</a>
+                    <a href="#" onclick="getRegion('Oceania')">Oceania</a>
                 </div>
             </div>
 
@@ -130,7 +139,106 @@
         </div>
 </body>
 <script>
+    var input = document.getElementById("input");
+    input.addEventListener("keyup", function (event) {
 
+
+
+        if (event.keyCode === 13) {
+
+            let url = "https://restcountries.eu/rest/v2/name/" + input.value;
+
+            var container = document.getElementById("card");
+            container.innerHTML = ""
+
+            fetch(url)
+                .then(res => res.json())
+                .then((out) => {
+                    for (i = 0; i < out.length; i++) {
+
+                        var div1 = document.createElement("div");
+                        var div2 = document.createElement("div");
+                        var div3 = document.createElement("div");
+                        var img = document.createElement("img");
+                        var h5 = document.createElement("h5");
+                        var p1 = document.createElement("p");
+                        var p2 = document.createElement("p");
+                        var p3 = document.createElement("p");
+                        div1.className = "col mb-4";
+                        div2.className = "card h-100";
+                        div3.className = "card-body";
+                        img.className = "card-img-top"
+                        img.src = out[i].flag
+                        h5.className = "card-title"
+                        h5.innerText = out[i].name
+                        p1.innerHTML = "Population: <strong>" + out[i].population + "</strong>"
+                        p2.innerHTML = "Region: <strong>" + out[i].region + "</strong>"
+                        p3.innerHTML = "Capital: <strong>" + out[i].capital + "</strong>"
+                        container.appendChild(div1);
+                        div1.appendChild(div2);
+                        div2.appendChild(img);
+                        div2.appendChild(div3);
+                        div3.appendChild(h5);
+                        div3.appendChild(p1);
+                        div3.appendChild(p2);
+                        div3.appendChild(p3);
+                    }
+
+
+                    input.value = ""
+
+
+                }).catch(err => console.error(err));
+
+        }
+    });
+
+    function getRegion(tipo) {
+
+        let url = "https://restcountries.eu/rest/v2/region/" + tipo;
+
+        var container = document.getElementById("card");
+        container.innerHTML = ""
+
+        fetch(url)
+            .then(res => res.json())
+            .then((out) => {
+                for (i = 0; i < out.length; i++) {
+
+                    var div1 = document.createElement("div");
+                    var div2 = document.createElement("div");
+                    var div3 = document.createElement("div");
+                    var img = document.createElement("img");
+                    var h5 = document.createElement("h5");
+                    var p1 = document.createElement("p");
+                    var p2 = document.createElement("p");
+                    var p3 = document.createElement("p");
+                    div1.className = "col mb-4";
+                    div2.className = "card h-100";
+                    div3.className = "card-body";
+                    img.className = "card-img-top"
+                    img.src = out[i].flag
+                    h5.className = "card-title"
+                    h5.innerText = out[i].name
+                    p1.innerHTML = "Population: <strong>" + out[i].population + "</strong>"
+                    p2.innerHTML = "Region: <strong>" + out[i].region + "</strong>"
+                    p3.innerHTML = "Capital: <strong>" + out[i].capital + "</strong>"
+                    container.appendChild(div1);
+                    div1.appendChild(div2);
+                    div2.appendChild(img);
+                    div2.appendChild(div3);
+                    div3.appendChild(h5);
+                    div3.appendChild(p1);
+                    div3.appendChild(p2);
+                    div3.appendChild(p3);
+                }
+
+
+                // document.getElementById("ip").innerHTML = out.query;
+
+
+            }).catch(err => console.error(err));
+    }
 
     function myMap() {
 
@@ -141,7 +249,6 @@
         fetch(url)
             .then(res => res.json())
             .then((out) => {
-                console.log('Output: ', out);
                 for (i = 0; i < out.length; i++) {
 
                     var div1 = document.createElement("div");
@@ -182,10 +289,14 @@
     myMap()
 
 
+
+
+
     function darkMode() {
         var body = document.body;
         var cards = document.getElementsByClassName("card")
         var botao = document.getElementById("botao")
+        var header = document.getElementById("header")
 
         console.log(body.className)
         if (body.className === "dark") {
@@ -193,24 +304,26 @@
             body.className = "light"
 
             for (i = 0; i < cards.length; i++) {
-                cards[i].className = "card h-100 light";
+                cards[i].className = "card h-100 lightCard";
             }
 
 
-            botao.className = "btn  light"
+            botao.className = "btn  lightCard"
             document.getElementById("mode").innerHTML = "Dark Mode";
+            header.style.backgroundColor = "hsl(0, 0%, 98%)";
             return
 
         }
 
 
         for (i = 0; i < cards.length; i++) {
-            cards[i].className = "card h-100 dark";
+            cards[i].className = "card h-100 darkCard";
         }
         body.className = "dark"
-        botao.className = "btn  dark"
+        botao.className = "btn  darkCard"
 
         document.getElementById("mode").innerHTML = "Light Mode";
+        header.style.backgroundColor = "hsl(209, 23%, 22%)";
 
     }
 </script>
