@@ -148,6 +148,7 @@
 
             let url = "https://restcountries.eu/rest/v2/name/" + input.value;
 
+            var body = document.body;
             var container = document.getElementById("card");
             container.innerHTML = ""
 
@@ -165,7 +166,7 @@
                         var p2 = document.createElement("p");
                         var p3 = document.createElement("p");
                         div1.className = "col mb-4";
-                        div2.className = "card h-100";
+                        div2.className = body.className === "dark" ? "card h-100 darkCard" : "card h-100 lightCard";
                         div3.className = "card-body";
                         img.className = "card-img-top"
                         img.src = out[i].flag
@@ -197,8 +198,11 @@
 
         let url = "https://restcountries.eu/rest/v2/region/" + tipo;
 
+        var body = document.body;
+        console.log(body.className)
         var container = document.getElementById("card");
         container.innerHTML = ""
+
 
         fetch(url)
             .then(res => res.json())
@@ -214,7 +218,7 @@
                     var p2 = document.createElement("p");
                     var p3 = document.createElement("p");
                     div1.className = "col mb-4";
-                    div2.className = "card h-100";
+                    div2.className = body.className === "dark" ? "card h-100 darkCard" : "card h-100 lightCard";
                     div3.className = "card-body";
                     img.className = "card-img-top"
                     img.src = out[i].flag
@@ -281,6 +285,7 @@
 
 
                 // document.getElementById("ip").innerHTML = out.query;
+
 
 
             }).catch(err => console.error(err));
